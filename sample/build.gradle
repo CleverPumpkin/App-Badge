@@ -1,0 +1,47 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+apply plugin: 'ru.cleverpumpkin.badge'
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.2'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName versionName
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    buildTypes {
+        debug {}
+        release {}
+    }
+    flavorDimensions "version"
+    productFlavors {
+        stage {}
+        prod {}
+    }
+}
+
+badge {
+    // Foreground of adaptive launcher icon
+    foregroundIconNames "@mipmap/ic_launcher_foreground"
+
+    variants {
+        prodDebug {
+            enabled = true
+            text = versionName
+        }
+    }
+}
+
+dependencies {
+    implementation 'com.android.support:appcompat-v7:28.0.0-rc02'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.2.61"
+}
