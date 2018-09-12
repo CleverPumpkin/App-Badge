@@ -91,3 +91,6 @@ badge {
     }
 }
 ```
+
+# Developed by 
+Sergey Chuprin - <gregamer@gmail.com>
