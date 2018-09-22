@@ -10,7 +10,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "gradle.plugin.app-badge:plugin:1.0.0"
+        classpath "gradle.plugin.app-badge:plugin:1.0.1"
     }
 }
 ```
@@ -59,7 +59,8 @@ badge {
     }
 
     //or
-    //variants has the highest priority. If variants config specified, others will be ignored
+    //variants has the highest priority. If variants config specified,
+    //others will be ignored
 
     variants {
         stageDebug {
@@ -69,6 +70,24 @@ badge {
     }
 }
 ```
+### Custom icons
+You can specify manually which icons to process:
+```
+badge {
+    buildTypes {
+        debug {
+            iconNames "@mipmap/ic_launcher_cusom", "@mipmap/ic_custom
+            foregroundIconNames "@mipmap/ic_launcher_foreground"
+            ...
+        }
+    }
+}
+```
+
+### Note
+If you're using plugin in a library module and use icons from this
+module in you app module, you need to specify icon names in library
+module
 
 ## Styling
 You can specify text size, label color, text color.
@@ -84,7 +103,8 @@ badge {
             text = "debug"
             fontSize = 12
             
-            //note that colors in format "#xxx" not supported, you have to specify colors as "#xxxxxx"
+            //note that colors in format "#xxx" not supported,
+            //you have to specify colors as "#xxxxxx"
             textColor = "#ffffff"
             labelColor = "#000000"
         }

@@ -2,10 +2,10 @@ package ru.cleverpumpkin.badge
 
 import spock.lang.Specification
 
-class ResourcesTest extends Specification {
+class ResourceUtilsTest extends Specification {
     def "resourceFilePattern"() {
         expect:
-        Resources.resourceFilePattern(resName) == pattern
+        ResourceUtils.resourceFilePattern(resName) == pattern
 
         where:
         resName                 | pattern
@@ -36,7 +36,7 @@ class ResourcesTest extends Specification {
 '''.trim())
 
         expect:
-        Resources.getLauncherIcons(file).containsAll(["@drawable/ic_launcher"])
+        ResourceUtils.getLauncherIcons(file).containsAll(["@drawable/ic_launcher"])
     }
 
     def "getLauncherIcon without android:icon"() {
@@ -62,7 +62,7 @@ class ResourcesTest extends Specification {
 '''.trim())
 
         expect:
-        Resources.getLauncherIcons(file).containsAll(["@drawable/ic_launcher_round"])
+        ResourceUtils.getLauncherIcons(file).containsAll(["@drawable/ic_launcher_round"])
     }
 
     def "getLauncherIcon with both android:icon and android:roundIcon"() {
@@ -89,6 +89,6 @@ class ResourcesTest extends Specification {
 '''.trim())
 
         expect:
-        Resources.getLauncherIcons(file).containsAll(["@drawable/ic_launcher", "@drawable/ic_launcher_round"])
+        ResourceUtils.getLauncherIcons(file).containsAll(["@drawable/ic_launcher", "@drawable/ic_launcher_round"])
     }
 }

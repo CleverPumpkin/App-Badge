@@ -1,21 +1,14 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-
+apply plugin: 'com.android.library'
 apply plugin: 'ru.cleverpumpkin.badge'
 
 android {
     compileSdkVersion 28
-    buildToolsVersion '28.0.2'
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName versionName
-    }
-
-    lintOptions {
-        abortOnError false
     }
 
     buildTypes {
@@ -30,9 +23,7 @@ android {
 }
 
 badge {
-    // Foreground of adaptive launcher icon
-    foregroundIconNames "@mipmap/ic_launcher_foreground"
-    iconNames "@mipmap/ic_launcher_custom"
+    iconNames "@mipmap/ic_lib_launcher"
 
     variants {
         prodDebug {
@@ -43,7 +34,6 @@ badge {
 }
 
 dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation androidX
-    implementation kotlinLib
-    implementation project(":samplelibrary")
 }

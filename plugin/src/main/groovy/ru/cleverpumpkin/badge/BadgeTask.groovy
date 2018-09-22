@@ -1,7 +1,7 @@
 package ru.cleverpumpkin.badge
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.api.ApplicationVariant
+import com.android.build.gradle.TestedExtension
+import com.android.build.gradle.api.BaseVariant
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.tasks.TaskAction
@@ -14,7 +14,7 @@ class BadgeTask extends DefaultTask {
 
     public static final String NAME = "badge"
 
-    private ApplicationVariant variant
+    private BaseVariant variant
 
     //@OutputDirectory
     File outputDir
@@ -26,7 +26,7 @@ class BadgeTask extends DefaultTask {
     List<BadgeFilter> filters = []
 
     void config(
-            ApplicationVariant variant,
+            BaseVariant variant,
             File outputDir,
             Set<String> iconNames,
             Set<String> foregroundIconNames,
@@ -93,7 +93,7 @@ class BadgeTask extends DefaultTask {
     ConfigurableFileTree getResourcesFileTree(File resDir, String name) {
         project.fileTree(
                 dir: resDir,
-                include: Resources.resourceFilePattern(name),
+                include: ResourceUtils.resourceFilePattern(name),
                 exclude: "**/*.xml",
         )
     }
@@ -104,17 +104,17 @@ class BadgeTask extends DefaultTask {
 
     Set<String> getLauncherIconNames() {
         androidManifestFiles
-                .flatMap { File file -> Resources.getLauncherIcons(file).stream() }
+                .flatMap { File file -> ResourceUtils.getLauncherIcons(file).stream() }
                 .collect(Collectors.toSet())
     }
 
     Stream<File> getAndroidManifestFiles() {
-        AppExtension android = project.extensions.findByType(AppExtension)
+        TestedExtension androidExtension = ProjectUtils.getAndroidExtension(project)
         ["main", variant.name, variant.buildType.name, variant.flavorName]
                 .stream()
                 .filter({ name -> !name.empty })
                 .distinct()
-                .map { name -> project.file(android.sourceSets[name].manifest.srcFile) }
+                .map { name -> project.file(androidExtension.sourceSets[name].manifest.srcFile) }
                 .filter { manifestFile -> manifestFile.exists() }
     }
 }

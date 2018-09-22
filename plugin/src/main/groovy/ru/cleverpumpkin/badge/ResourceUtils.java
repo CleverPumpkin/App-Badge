@@ -16,7 +16,7 @@ import groovy.util.slurpersupport.GPathResult;
 
 import static java.util.Collections.unmodifiableList;
 
-public class Resources {
+public class ResourceUtils {
 
     private static XmlSlurper xmlSlurper;
 

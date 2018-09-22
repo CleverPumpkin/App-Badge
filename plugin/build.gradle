@@ -34,7 +34,7 @@ pluginBundle {
         badgePlugin {
             id = 'ru.cleverpumpkin.badge'
             displayName = 'Android Icon Badge Plugin'
-            version "1.0.0"
+            version "1.0.1"
         }
     }
 }

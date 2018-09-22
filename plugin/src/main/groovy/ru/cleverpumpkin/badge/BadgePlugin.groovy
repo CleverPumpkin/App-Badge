@@ -1,7 +1,8 @@
 package ru.cleverpumpkin.badge
 
-import com.android.build.gradle.AppExtension
-import com.android.build.gradle.api.ApplicationVariant
+import com.android.build.gradle.BaseExtension
+import com.android.build.gradle.TestedExtension
+import com.android.build.gradle.api.BaseVariant
 import groovy.transform.CompileStatic
 import org.gradle.api.NamedDomainObjectContainer
 import org.gradle.api.Plugin
@@ -54,12 +55,12 @@ class BadgePlugin implements Plugin<Project> {
 
         project.afterEvaluate {
 
-            AppExtension android = getAndroidExtension(project)
+            TestedExtension androidExtension = ProjectUtils.getAndroidExtension(project)
 
             BadgeExtension extension = project.extensions.findByType(BadgeExtension)
             List<Task> tasks = new ArrayList<Task>()
 
-            android.applicationVariants.all { ApplicationVariant variant ->
+            ProjectUtils.getAllVariants(androidExtension).all { BaseVariant variant ->
 
                 List<PluginExtension> configs = getAllConfigs(variant, variants, buildTypes, productFlavors)
 
@@ -70,7 +71,7 @@ class BadgePlugin implements Plugin<Project> {
 
                     List<BadgeFilter> filters = getAllFilters(configs, variant)
 
-                    BadgeTask badgeTask = createBadgeTask(filters, extension, android, project, variant)
+                    BadgeTask badgeTask = createBadgeTask(filters, extension, androidExtension, project, variant)
                     tasks.add(badgeTask)
 
                     project
@@ -85,7 +86,7 @@ class BadgePlugin implements Plugin<Project> {
 
     private static List<BadgeFilter> getAllFilters(
             List<PluginExtension> configs,
-            ApplicationVariant variant
+            BaseVariant variant
     ) {
         List<BadgeFilter> filters = new ArrayList<>()
         configs.each { PluginExtension config -> filters.add(createFilter(config, variant)) }
@@ -93,7 +94,7 @@ class BadgePlugin implements Plugin<Project> {
     }
 
     private static List<PluginExtension> getAllConfigs(
-            ApplicationVariant variant,
+            BaseVariant variant,
             NamedDomainObjectContainer<PluginExtension> variants,
             NamedDomainObjectContainer<PluginExtension> buildTypes,
             NamedDomainObjectContainer<PluginExtension> productFlavors
@@ -115,9 +116,9 @@ class BadgePlugin implements Plugin<Project> {
     private static BadgeTask createBadgeTask(
             List<BadgeFilter> filters,
             BadgeExtension extension,
-            AppExtension android,
+            BaseExtension android,
             Project project,
-            ApplicationVariant variant
+            BaseVariant variant
     ) {
         File generatedResDir = getGeneratedResDir(project, variant)
         android.sourceSets.findByName(variant.name).res.srcDir(generatedResDir)
@@ -136,21 +137,15 @@ class BadgePlugin implements Plugin<Project> {
     }
 
     private
-    static TextLabelFilter createFilter(PluginExtension config, ApplicationVariant variant) {
+    static TextLabelFilter createFilter(PluginExtension config, BaseVariant variant) {
         String text = requireNonNull(config.text, {
             "PluginExtension's text is null for variant: " + variant.buildType.name
         })
 
-        Color textColor = Resources.parseColor(config.textColor)
-        Color labelColor = Resources.parseColor(config.labelColor)
+        Color textColor = ResourceUtils.parseColor(config.textColor)
+        Color labelColor = ResourceUtils.parseColor(config.labelColor)
 
         new TextLabelFilter(text, textColor, labelColor, config.fontSize)
-    }
-
-    private static AppExtension getAndroidExtension(Project project) {
-        requireNonNull(project.extensions.findByType(AppExtension), {
-            "Not an Android application; did you forget `apply plugin: 'com.android.application`?"
-        })
     }
 
     private static NamedDomainObjectContainer<PluginExtension> getConfigContainer(
@@ -162,7 +157,7 @@ class BadgePlugin implements Plugin<Project> {
         container
     }
 
-    private static File getGeneratedResDir(Project project, ApplicationVariant variant) {
+    private static File getGeneratedResDir(Project project, BaseVariant variant) {
         new File(project.buildDir, "generated/badge/res/${variant.name}")
     }
 }
