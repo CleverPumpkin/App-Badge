@@ -42,7 +42,6 @@ class BadgeTask extends DefaultTask {
     @SuppressWarnings("GroovyUnusedDeclaration")
     @TaskAction
     def run() {
-
         if (filters.empty) return
 
         long currentTime = System.currentTimeMillis()
@@ -55,7 +54,6 @@ class BadgeTask extends DefaultTask {
                 .flatMap({ sourceProvider -> sourceProvider.resDirectories.stream() })
 
         resDirectories.forEach { File resDir ->
-
             if (resDir == outputDir) return
 
             allIcons.forEach { String name ->

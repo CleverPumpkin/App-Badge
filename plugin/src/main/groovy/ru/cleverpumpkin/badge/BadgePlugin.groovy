@@ -24,7 +24,6 @@ class BadgePlugin implements Plugin<Project> {
     private static final String awtGraphicsProp = "java.awt.graphicsenv"
 
     static {
-
         System.setProperty("java.awt.headless", "true")
 
         // workaround for an Android Studio issue
@@ -45,7 +44,6 @@ class BadgePlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-
         project.extensions.add BadgeExtension.NAME, BadgeExtension
 
         //these blocks will be available for configuration
@@ -60,7 +58,8 @@ class BadgePlugin implements Plugin<Project> {
             BadgeExtension extension = project.extensions.findByType(BadgeExtension)
             List<Task> tasks = new ArrayList<Task>()
 
-            ProjectUtils.getAllVariants(androidExtension).all { BaseVariant variant ->
+            def allVariants = ProjectUtils.getAllVariants(androidExtension)
+            allVariants.all { BaseVariant variant ->
 
                 List<PluginExtension> configs = getAllConfigs(variant, variants, buildTypes, productFlavors)
 
@@ -71,15 +70,16 @@ class BadgePlugin implements Plugin<Project> {
 
                     List<BadgeFilter> filters = getAllFilters(configs, variant)
 
-                    BadgeTask badgeTask = createBadgeTask(filters, extension, androidExtension, project, variant)
-                    tasks.add(badgeTask)
+                    if (!filters.isEmpty()) {
 
-                    project
-                            .getTasksByName("generate${variant.name.capitalize()}Resources", false)
-                            .forEach { Task task -> task.dependsOn(badgeTask) }
+                        BadgeTask badgeTask = createBadgeTask(filters, extension, androidExtension, project, variant)
+                        tasks.add(badgeTask)
+
+                        Set<Task> androidResTasks = project.getTasksByName("generate${variant.name.capitalize()}Resources", false)
+                        androidResTasks.forEach { Task task -> task.dependsOn(badgeTask) }
+                    }
                 }
             }
-
             project.task(BadgeTask.NAME, dependsOn: tasks)
         }
     }
@@ -121,9 +121,10 @@ class BadgePlugin implements Plugin<Project> {
             BaseVariant variant
     ) {
         File generatedResDir = getGeneratedResDir(project, variant)
+
         android.sourceSets.findByName(variant.name).res.srcDir(generatedResDir)
 
-        GString name = "${BadgeTask.NAME}${variant.name.capitalize()}"
+        GString name = "generateBadgeFor${variant.name.capitalize()}"
         BadgeTask task = project.task(name, type: BadgeTask) as BadgeTask
 
         task.config(
@@ -160,4 +161,5 @@ class BadgePlugin implements Plugin<Project> {
     private static File getGeneratedResDir(Project project, BaseVariant variant) {
         new File(project.buildDir, "generated/badge/res/${variant.name}")
     }
+
 }

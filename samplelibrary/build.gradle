@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'ru.cleverpumpkin.badge'
+//apply plugin: 'ru.cleverpumpkin.badge'
 
 android {
     compileSdkVersion 28
@@ -22,16 +22,16 @@ android {
     }
 }
 
-badge {
-    iconNames "@mipmap/ic_lib_launcher"
-
-    variants {
-        prodDebug {
-            enabled = true
-            text = versionName
-        }
-    }
-}
+//badge {
+//    iconNames "@mipmap/ic_lib_launcher"
+//
+//    variants {
+//        prodDebug {
+//            enabled = true
+//            text = versionName
+//        }
+//    }
+//}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
