@@ -2,7 +2,10 @@ package ru.cleverpumpkin.appbadge.filter
 
 import java.awt.image.BufferedImage
 
-interface BadgeFilter {
+/**
+ * @author Sergey Chuprin
+ */
+interface AppBadgeFilter {
 
     fun apply(image: BufferedImage)
 

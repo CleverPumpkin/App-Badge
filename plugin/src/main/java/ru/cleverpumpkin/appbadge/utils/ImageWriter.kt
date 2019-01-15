@@ -1,11 +1,10 @@
 package ru.cleverpumpkin.appbadge.utils
 
 
-import ru.cleverpumpkin.appbadge.filter.BadgeFilter
+import ru.cleverpumpkin.appbadge.filter.AppBadgeFilter
 import java.awt.image.BufferedImage
 import java.io.File
 import java.io.IOException
-import java.util.stream.Stream
 import javax.imageio.ImageIO
 
 class ImageWriter(inputFile: File, private val outputFile: File) {
@@ -18,5 +17,6 @@ class ImageWriter(inputFile: File, private val outputFile: File) {
         ImageIO.write(image, "png", outputFile)
     }
 
-    fun process(filters: Stream<BadgeFilter>) = filters.forEach { filter -> filter.apply(image) }
+    fun process(filters: List<AppBadgeFilter>) = filters.forEach { filter -> filter.apply(image) }
+
 }

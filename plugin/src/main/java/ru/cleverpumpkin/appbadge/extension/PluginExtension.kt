@@ -1,5 +1,8 @@
 package ru.cleverpumpkin.appbadge.extension
 
+/**
+ * @author Sergey Chuprin
+ */
 class PluginExtension(
     val name: String
 ) {

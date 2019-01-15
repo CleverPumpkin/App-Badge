@@ -46,3 +46,7 @@ gradlePlugin {
         }
     }
 }
+
+tasks.withType(Javadoc::class.java) {
+    enabled = false
+}

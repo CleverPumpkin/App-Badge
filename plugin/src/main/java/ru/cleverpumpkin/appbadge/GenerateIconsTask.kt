@@ -5,7 +5,7 @@ import com.android.builder.model.SourceProvider
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileTree
 import org.gradle.api.tasks.TaskAction
-import ru.cleverpumpkin.appbadge.filter.BadgeFilter
+import ru.cleverpumpkin.appbadge.filter.AppBadgeFilter
 import ru.cleverpumpkin.appbadge.utils.ImageWriter
 import ru.cleverpumpkin.appbadge.utils.ProjectUtils
 import ru.cleverpumpkin.appbadge.utils.ResourceUtils
@@ -19,9 +19,8 @@ import javax.inject.Inject
 open class GenerateIconsTask @Inject constructor(
     private val variant: BaseVariant,
     private val outputDir: File,
-    // `iconNames` includes: "@drawable/icon", "@mipmap/ic_launcher", etc.
     private val iconNames: Collection<String>,
-    private val filters: List<BadgeFilter>
+    private val filters: List<AppBadgeFilter>
 ) : DefaultTask() {
 
     companion object {
@@ -48,7 +47,7 @@ open class GenerateIconsTask @Inject constructor(
         outputFile.parentFile.mkdirs()
 
         ImageWriter(inputFile, outputFile).run {
-            process(filters.stream())
+            process(filters)
             write()
         }
     }

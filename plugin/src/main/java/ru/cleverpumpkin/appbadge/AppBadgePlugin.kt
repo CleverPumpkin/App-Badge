@@ -8,7 +8,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import ru.cleverpumpkin.appbadge.extension.AppBadgeExtension
 import ru.cleverpumpkin.appbadge.extension.PluginExtension
-import ru.cleverpumpkin.appbadge.filter.BadgeFilter
+import ru.cleverpumpkin.appbadge.filter.AppBadgeFilter
 import ru.cleverpumpkin.appbadge.filter.TextLabelFilter
 import ru.cleverpumpkin.appbadge.utils.ProjectUtils
 import ru.cleverpumpkin.appbadge.utils.ResourceUtils
@@ -18,6 +18,7 @@ import java.util.Objects.requireNonNull
 /**
  * @author Sergey Chuprin
  */
+@Suppress("unused")
 class AppBadgePlugin : Plugin<Project> {
 
     private companion object {
@@ -83,7 +84,7 @@ class AppBadgePlugin : Plugin<Project> {
     }
 
     private fun createBadgeTask(
-        filters: List<BadgeFilter>,
+        filters: List<AppBadgeFilter>,
         extension: AppBadgeExtension,
         android: BaseExtension,
         project: Project,
@@ -110,7 +111,7 @@ class AppBadgePlugin : Plugin<Project> {
     private fun getAllFilters(
         configs: List<PluginExtension>,
         variant: BaseVariant
-    ): List<BadgeFilter> {
+    ): List<AppBadgeFilter> {
         return configs.map { config -> createFilter(config, variant) }
     }
 
@@ -124,9 +125,9 @@ class AppBadgePlugin : Plugin<Project> {
 
         return TextLabelFilter(
             text,
+            config.fontSize,
             textColor,
-            labelColor,
-            config.fontSize
+            labelColor
         )
     }
 
