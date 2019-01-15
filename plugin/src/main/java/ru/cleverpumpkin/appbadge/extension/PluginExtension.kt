@@ -3,12 +3,17 @@ package ru.cleverpumpkin.appbadge.extension
 /**
  * @author Sergey Chuprin
  */
-class PluginExtension(
-    val name: String
-) {
-    var fontSize = 10
-    var enabled = false
-    var textColor = "#FFFFFF"
-    var labelColor = "#9C000000"
-    var text: String? = null
+open class PluginExtension {
+
+    companion object {
+        const val NAME = "appBadge"
+
+        const val VARIANTS = "variants"
+        const val FLAVORS = "productFlavors"
+        const val BUILD_TYPES = "buildTypes"
+    }
+
+    // `iconNames` includes: "@drawable/icon", "@mipmap/ic_launcher", etc.
+    var iconNames = listOf<String>()
+
 }
