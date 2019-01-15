@@ -57,14 +57,12 @@ public class ResourceUtils {
     }
 
     /**
-     * </p>Parse the color string, and return the corresponding color-int.
+     * Parse the color string, and return the corresponding color-int.
      * If the string cannot be parsed, throws an IllegalArgumentException
-     * exception. Supported formats are:</p>
-     *
-     * <ul>
-     * <li><code>#RRGGBB</code></li>
-     * <li><code>#AARRGGBB</code></li>
-     * </ul>
+     * exception. Supported formats are:
+     * <p>
+     * #RRGGBB
+     * #AARRGGBB
      */
     public static Color parseColor(String colorString) {
         if (colorString.charAt(0) == '#') {

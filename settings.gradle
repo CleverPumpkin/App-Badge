@@ -1,2 +1,2 @@
-include ':plugin', ':samplelibrary'
+include ':plugin', ':sample-library'
 include ':sample'
