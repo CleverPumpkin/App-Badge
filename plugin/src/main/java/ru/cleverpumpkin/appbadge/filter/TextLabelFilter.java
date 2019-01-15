@@ -1,4 +1,4 @@
-package ru.cleverpumpkin.badge.filter;
+package ru.cleverpumpkin.appbadge.filter;
 
 import java.awt.Color;
 import java.awt.Font;

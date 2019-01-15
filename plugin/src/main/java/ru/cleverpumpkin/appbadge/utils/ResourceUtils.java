@@ -1,4 +1,4 @@
-package ru.cleverpumpkin.badge;
+package ru.cleverpumpkin.appbadge.utils;
 
 import org.xml.sax.SAXException;
 

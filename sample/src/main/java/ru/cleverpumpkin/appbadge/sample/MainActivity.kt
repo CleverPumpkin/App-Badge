@@ -1,8 +1,8 @@
-package ru.cleverpumpkin.badge.sample
+package ru.cleverpumpkin.appbadge.sample
 
 import android.app.Activity
 import android.os.Bundle
-import ru.cleverpumpkin.badge.R
+import ru.cleverpumpkin.appbadge.R
 
 class MainActivity : Activity() {
 

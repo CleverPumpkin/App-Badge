@@ -6,13 +6,13 @@ object Versions {
 }
 
 object BuildScriptPlugins {
-    const val appBadge = "ru.cleverpumpkin.app-badge:plugin:${Versions.projectVersion}"
+    const val appBadge = "ru.cleverpumpkin.appbadge:plugin:${Versions.projectVersion}"
     const val android = "com.android.tools.build:gradle:${Versions.gradlePlugin}"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 }
 
 object Plugins {
-    const val appBadge = "ru.cleverpumpkin.app-badge"
+    const val appBadge = "ru.cleverpumpkin.appbadge"
 }
 
 object Libraries {

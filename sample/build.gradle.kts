@@ -6,11 +6,11 @@ plugins {
 
 android {
     defaultConfig {
-        applicationId = "ru.cleverpumpkin.app-badge.sample"
+        applicationId = "ru.cleverpumpkin.appbadge.sample"
     }
 }
 
-badge {
+appBadge {
     iconNames = listOf(
         "@mipmap/ic_launcher_custom",
         "@mipmap/ic_launcher_foreground"

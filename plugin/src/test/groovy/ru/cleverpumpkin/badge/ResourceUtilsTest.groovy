@@ -1,7 +1,8 @@
-package ru.cleverpumpkin.badge
+
 
 import spock.lang.Specification
 
+// TODO: Fix tests.
 class ResourceUtilsTest extends Specification {
     def "resourceFilePattern"() {
         expect:

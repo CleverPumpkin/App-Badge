@@ -42,7 +42,7 @@ gradlePlugin {
             id = Plugins.appBadge
             displayName = "App Badge Generator"
             version = Versions.projectVersion
-            implementationClass = "ru.cleverpumpkin.badge.kt.BadgePluginKt"
+            implementationClass = "ru.cleverpumpkin.appbadge.AppBadgePlugin"
         }
     }
 }
