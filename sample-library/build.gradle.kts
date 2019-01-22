@@ -4,7 +4,7 @@ plugins {
     id(Plugins.appBadge)
 }
 
-appBadge {
+badge {
     iconNames = listOf("@mipmap/ic_lib_launcher")
     buildTypes {
         create("debug") {

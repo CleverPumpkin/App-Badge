@@ -1,2 +1,1 @@
-include ':plugin', ':sample-library'
-include ':sample'
+include ':plugin', ':sample-library', ':sample-library-groovy', ':sample'

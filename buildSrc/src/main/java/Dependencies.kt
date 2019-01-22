@@ -2,17 +2,17 @@ object Versions {
     const val kotlin = "1.3.11"
     const val androidX = "1.0.0"
     const val gradlePlugin = "3.3.0"
-    const val projectVersion = "1.1.0"
+    const val projectVersion = "1.0.2"
 }
 
 object BuildScriptPlugins {
-    const val appBadge = "ru.cleverpumpkin.appbadge:plugin:${Versions.projectVersion}"
+    const val appBadge = "app-badge:plugin:${Versions.projectVersion}"
     const val android = "com.android.tools.build:gradle:${Versions.gradlePlugin}"
     const val kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
 }
 
 object Plugins {
-    const val appBadge = "ru.cleverpumpkin.appbadge"
+    const val appBadge = "ru.cleverpumpkin.badge"
 }
 
 object Libraries {

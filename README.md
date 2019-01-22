@@ -14,13 +14,13 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "gradle.plugin.app-badge:plugin:1.0.1"
+        classpath "gradle.plugin.app-badge:plugin:1.0.2"
     }
 }
 ```
 Then apply plugin in your app's **build.gradle**
 ```
-apply plugin: "ru.cleverpumpkin.appbadge"
+apply plugin: "ru.cleverpumpkin.badge"
 ```
 
 # Configuration
@@ -36,7 +36,7 @@ android {
     }
 }
 
-appBadge {
+badge {
     buildTypes {
         debug {
             enabled = true
@@ -70,23 +70,11 @@ appBadge {
 ### Custom icons
 You can specify manually which icons to process:
 ```
-appBadge {
-    buildTypes {
-        debug {
-            iconNames = ["@mipmap/ic_launcher_cusom"]
-        }
-    }
+badge {
+    iconNames = ["@mipmap/ic_launcher_cusom"]
 }
 ```
 
-### Migration from 1.0.1 to 1.1.0
-In version 1.1.0 plugin's extension and plugin
-ID changed to be more consistent.
-
-| What                  |1.0.1                   | 1.1.0                     |
-| ----------------------|:----------------------:|:-------------------------:|
-| Plugin ID             | ru.cleverpumpkin.badge | ru.cleverpumpkin.appbadge |
-| Plugin extension      | badge                  |appBadge                   |
 ### Note
 If you're using plugin in a library module and use icons from this
 module in you app module, you need to specify icon names in library
@@ -96,7 +84,7 @@ module.
 You can specify text size, label color, text color.
 Gravity customization isn't available. Bottom used by default.
 ```
-appBadge {
+badge {
     buildTypes {
         debug {
             enabled = true

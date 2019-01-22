@@ -10,7 +10,7 @@ android {
     }
 }
 
-appBadge {
+badge {
     iconNames = listOf(
         "@mipmap/ic_launcher_custom",
         "@mipmap/ic_launcher_foreground"

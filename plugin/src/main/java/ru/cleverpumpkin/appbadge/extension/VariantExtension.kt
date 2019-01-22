@@ -3,7 +3,7 @@ package ru.cleverpumpkin.appbadge.extension
 /**
  * @author Sergey Chuprin
  */
-class VariantExtension(
+open class VariantExtension(
     /**
      * Represents buildType, flavour or variant.
      */

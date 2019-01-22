@@ -15,13 +15,13 @@ dependencies {
     implementation(BuildScriptPlugins.android)
 }
 
-group = Plugins.appBadge
+//group = Plugins.appBadge
 
 // Upload archive to rootProject/plugin/badgeRepo folder to test plugin locale.
 tasks.named<Upload>("uploadArchives") {
     repositories.withGroovyBuilder {
         "mavenDeployer" {
-            "repository"("url" to "file://badgeRepo")
+            "repository"("url" to "file://pluginRepo")
         }
     }
 }

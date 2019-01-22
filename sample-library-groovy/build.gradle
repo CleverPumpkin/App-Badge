@@ -1,0 +1,18 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: Plugins.appBadge
+
+badge {
+    iconNames = ["@mipmap/ic_lib_2"]
+    buildTypes {
+        debug {
+            enabled = true
+            text = Versions.projectVersion
+        }
+    }
+}
+
+dependencies {
+    implementation Libraries.kotlin
+    implementation Libraries.androidX
+}

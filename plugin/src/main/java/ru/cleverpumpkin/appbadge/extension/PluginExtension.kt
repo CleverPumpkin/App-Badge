@@ -6,7 +6,7 @@ package ru.cleverpumpkin.appbadge.extension
 open class PluginExtension {
 
     companion object {
-        const val NAME = "appBadge"
+        const val NAME = "badge"
 
         const val VARIANTS = "variants"
         const val FLAVORS = "productFlavors"

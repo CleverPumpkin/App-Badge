@@ -5,7 +5,7 @@ buildscript {
         jcenter()
         google()
         mavenCentral()
-        maven(uri("plugin/badgeRepo"))
+        maven(uri("plugin/pluginRepo"))
     }
     dependencies {
         classpath(BuildScriptPlugins.kotlin)
