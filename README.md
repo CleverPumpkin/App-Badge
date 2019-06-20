@@ -102,3 +102,5 @@ badge {
 
 # Developed by 
 Sergey Chuprin - <gregamer@gmail.com>
+# Maintained by
+CleverPumpkin – https://cleverpumpkin.ru
