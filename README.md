@@ -14,7 +14,7 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath "gradle.plugin.app-badge:plugin:1.0.2"
+        classpath "gradle.plugin.app-badge:plugin:1.0.3"
     }
 }
 ```
@@ -104,3 +104,5 @@ badge {
 Sergey Chuprin - <gregamer@gmail.com>
 # Maintained by
 CleverPumpkin – https://cleverpumpkin.ru
+
+https://plugins.gradle.org/plugin/ru.cleverpumpkin.badge
