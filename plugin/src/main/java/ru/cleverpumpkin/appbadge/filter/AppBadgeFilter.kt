@@ -7,6 +7,6 @@ import java.awt.image.BufferedImage
  */
 interface AppBadgeFilter {
 
-    fun apply(image: BufferedImage)
+    fun apply(image: BufferedImage, isAdaptiveIcon: Boolean)
 
 }

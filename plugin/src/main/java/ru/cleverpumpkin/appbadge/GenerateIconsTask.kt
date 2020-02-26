@@ -2,8 +2,15 @@ package ru.cleverpumpkin.appbadge
 
 import com.android.build.gradle.api.BaseVariant
 import com.android.builder.model.SourceProvider
+import groovy.util.Node
+import groovy.util.NodeList
+import groovy.util.XmlParser
+import groovy.util.XmlSlurper
+import groovy.xml.QName
+import groovy.xml.XmlUtil
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileTree
+import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.TaskAction
 import ru.cleverpumpkin.appbadge.filter.AppBadgeFilter
 import ru.cleverpumpkin.appbadge.utils.ImageWriter
@@ -25,6 +32,8 @@ open class GenerateIconsTask @Inject constructor(
 
     companion object {
         private const val MAIN_SOURCE_SET = "main"
+        private val xmlSlurper = XmlSlurper()
+        private val overlayIdx = 0
     }
 
     @TaskAction
@@ -32,13 +41,14 @@ open class GenerateIconsTask @Inject constructor(
     fun run() {
         if (filters.isEmpty()) return
         val icons = getAllIcons().takeUnless(Set<String>::isEmpty) ?: return
-
+        
         variant
             .sourceSets
             .flatMap(SourceProvider::getResDirectories)
             .forEach { resDir ->
                 if (resDir == outputDir) return@forEach
                 icons.forEach { name -> getResourcesFileTree(resDir, name).forEach(::processIcon) }
+                icons.forEach { name -> getAdaptiveIconFileTree(resDir, name).forEach(::processAdaptiveIcon) }
             }
     }
 
@@ -46,10 +56,57 @@ open class GenerateIconsTask @Inject constructor(
         val outputFile = File(outputDir, "${inputFile.parentFile.name}/${inputFile.name}")
         outputFile.parentFile.mkdirs()
 
-        ImageWriter(inputFile, outputFile).run {
-            process(filters)
+        ImageWriter(outputFile).run {
+            read(inputFile)
+            process(filters, false)
             write()
         }
+    }
+
+    private fun processAdaptiveIcon(inputFile: File) {
+        
+        // XML is an adaptive icon, specifying a background and foreground layer
+        val xml = XmlParser().parse(inputFile)
+        
+        val fg = (xml["foreground"] as NodeList)[0] as Node
+        val drawableAttr = QName("http://schemas.android.com/apk/res/android", "drawable")
+
+        // We replace the foreground drawable with a generated layer-list drawable,
+        // containing (1) the original (vector) icon, and (2) the overlay.
+        val newResName = createOverlayedDrawable(fg.attributes().get(drawableAttr) as String, inputFile.parentFile)
+        fg.attributes().put(drawableAttr, newResName)
+        
+        val outputFile = File(outputDir, "${inputFile.parentFile.name}/${inputFile.name}")
+        outputFile.parentFile.mkdirs()
+        outputFile.writeText(XmlUtil.serialize(xml))
+    }
+    
+    private fun createOverlayedDrawable(originalResourceId: String, resDir: File): String {
+
+        val newResourceName = "appicon_badged_$overlayIdx"
+        val newOverlayName = "badge_overlay_$overlayIdx"
+        
+        // create overlay png
+        val outputFile = File(outputDir, "drawable/${newOverlayName}.png")
+        ImageWriter(outputFile).run {
+            process(filters, true)
+            write()
+        }
+        
+        // create combined layer-list drawable
+        val xmlTemplate = "<layer-list\n" +
+            "    xmlns:android=\"http://schemas.android.com/apk/res/android\"\n" +
+            "    >\n" +
+            "    <item android:drawable=\"%s\" />\n" +
+            "    <item android:drawable=\"%s\" />\n" +
+            "</layer-list>\n"
+        
+        val overlayResourceName = "@drawable/$newOverlayName"
+        val xmlString = xmlTemplate.format(originalResourceId, overlayResourceName)
+        File(outputDir, resDir.name).mkdirs()
+        File(outputDir, "${resDir.name}/${newResourceName}.xml").writeText(xmlString)
+        
+        return "@mipmap/$newResourceName"
     }
 
     private fun getResourcesFileTree(resDir: File, iconName: String): ConfigurableFileTree {
@@ -57,6 +114,15 @@ open class GenerateIconsTask @Inject constructor(
             exclude("**/*.xml")
             include(ResourceUtils.resourceFilePattern(iconName))
         })
+    }
+
+    private fun getAdaptiveIconFileTree(resDir: File, iconName: String): FileCollection {
+        return project.fileTree(resDir) {
+            include(ResourceUtils.resourceFilePattern(iconName))
+        }
+            .filter { f -> f.absolutePath.endsWith(".xml") }
+            .filter { f -> xmlSlurper.parse(f).name() == "adaptive-icon"
+            }
     }
 
     private fun getAllIcons(): Set<String> {

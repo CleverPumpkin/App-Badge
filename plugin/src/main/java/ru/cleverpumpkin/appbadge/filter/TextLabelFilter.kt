@@ -17,7 +17,7 @@ class TextLabelFilter(
     private val labelColor: Color
 ) : AppBadgeFilter {
 
-    override fun apply(image: BufferedImage) {
+    override fun apply(image: BufferedImage, isAdaptiveIcon: Boolean) {
         val imgWidth = image.width
         val imgHeight = image.height
 
@@ -31,33 +31,49 @@ class TextLabelFilter(
         val lineHeight = graphics2D.fontMetrics.height
         val padding = fontSize / 3
 
-        var yPoint = imgHeight - padding
-
         val wrappedLines = TextWrappingUtils.wrap(text, graphics2D.fontMetrics, imgWidth)
 
-        // Calculate most bottom Y coordinate.
+        // Calculate height for text.
         // Maybe it will be better to calculate line height using ascent and descent
         // from FontMetrics, but im lazy.
-        val endYPoint = wrappedLines.fold(yPoint) { acc, _ -> acc - lineHeight / 2 }
+        val textHeight = wrappedLines.fold(0, { acc, _ -> acc + lineHeight })
+        
+        // box around text, with padding on top/bottom
+        val boxHeight = textHeight + 2 * padding
+        val boxTop: Number
+        val textTop: Number
+        if (isAdaptiveIcon) {
+            // icon is a circe; center text vertically
+            boxTop = imgHeight / 2 - boxHeight / 2
+            textTop = imgHeight / 2 - textHeight / 2
+        } else {
+            // icon is a square; position text on the bottom of the icon
+            boxTop = imgHeight - boxHeight
+            textTop = imgHeight - textHeight - padding
+        }
 
         graphics2D.apply {
             // Draw label rectangle.
             color = labelColor
-            fillRect(0, endYPoint - padding * 2, imgWidth, yPoint)
+            fillRect(0, boxTop, imgWidth, boxHeight)
             color = textColor
         }
 
         // Draw lines from bottom.
-        for (i in wrappedLines.indices.reversed()) {
+        // yPoint specifies the top of the line to draw
+        // drawString takes the "baseline" of the string
+        val textBaselineOffset = lineHeight - graphics2D.fontMetrics.descent
+        var yPoint = textTop
+        for (i in wrappedLines.indices) {
             val wrappedLine = wrappedLines[i]
             val strWidth = graphics2D.fontMetrics.stringWidth(wrappedLine)
 
             // Center text if image width is larger than line width.
             val xPos = if (imgWidth >= strWidth) (imgWidth - strWidth) / 2 else 0
-
-            graphics2D.drawString(wrappedLine, xPos, yPoint)
-
-            yPoint -= lineHeight / 2
+            
+            graphics2D.drawString(wrappedLine, xPos, yPoint + textBaselineOffset)
+            
+            yPoint += lineHeight
         }
 
         graphics2D.dispose()
