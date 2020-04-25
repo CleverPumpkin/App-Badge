@@ -12,8 +12,7 @@ android {
 
 badge {
     iconNames = listOf(
-        "@mipmap/ic_launcher_custom",
-        "@mipmap/ic_launcher_foreground"
+        "@mipmap/ic_launcher_custom"
     )
     buildTypes {
         create("debug") {
