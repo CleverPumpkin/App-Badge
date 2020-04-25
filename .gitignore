@@ -25,3 +25,5 @@ hs_err_pid*
 /.idea/
 /.gradle/
 /buildSrc/.gradle/
+/buildSrc/build
+/plugin/pluginRepo

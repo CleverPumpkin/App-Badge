@@ -71,7 +71,7 @@ badge {
 You can specify manually which icons to process:
 ```
 badge {
-    iconNames = ["@mipmap/ic_launcher_cusom"]
+    iconNames = ["@mipmap/ic_launcher_custom"]
 }
 ```
 
@@ -99,6 +99,13 @@ badge {
     }
 }
 ```
+
+# Development
+- Make sure that the repository's directory is called 'app-badge', small letters,
+  as this name is using for the artifact's group name.
+- If you're building a new version, comment `classpath(BuildScriptPlugins.appBadge)` in the main
+  `build.gradle.kts`, then run `./gradlew :plugin:uploadArchives` to create a plugin in
+  `plugin/pluginRepo`.
 
 # Developed by 
 Sergey Chuprin - <gregamer@gmail.com>

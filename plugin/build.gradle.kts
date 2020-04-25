@@ -19,9 +19,11 @@ dependencies {
 
 // Upload archive to rootProject/plugin/badgeRepo folder to test plugin locale.
 tasks.named<Upload>("uploadArchives") {
+    val pluginRepoUrl = file("pluginRepo").toURI()
+    print(pluginRepoUrl)
     repositories.withGroovyBuilder {
         "mavenDeployer" {
-            "repository"("url" to "file://pluginRepo")
+            "repository"("url" to pluginRepoUrl)
         }
     }
 }

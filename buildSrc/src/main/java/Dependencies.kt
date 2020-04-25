@@ -2,7 +2,7 @@ object Versions {
     const val kotlin = "1.3.11"
     const val androidX = "1.0.0"
     const val gradlePlugin = "3.3.0"
-    const val projectVersion = "1.0.2"
+    const val projectVersion = "1.0.3"
 }
 
 object BuildScriptPlugins {
